@@ -1,0 +1,22 @@
++h.load("jquery")
++h.load("/fb_static/lib/responsive_waterfall.js")
+album_folder = d.get_doc(path, match=True, type='folder')
+if album_folder
+    dom_id = h.get_dom_id()
+    image_sort = 'position'
+    min_box_width = width.force_int or 250
+    thumbnail_width = thumbnail_width or 600
+    thumbnail_height = thumbnail_height or None
+    image_docs = d.get_data(path=path, type='image', limit=50, with_page=False, sort=sort)
+    waterfall_dom_id = 'waterfall_%s'%dom_id
+    .h_show_waterfall_container
+        .humech_waterfall(id=waterfall_dom_id)
+            for doc in image_docs
+                cover = doc.url.resize(width=thumbnail_width, height=thumbnail_height, fixed=thumbnail_fixed)
+                if cover!='/404': .item: .item_body
+                    +h.auto_a(title=cover, href=doc.url, alt=doc.title)
+                    if show_title: .description
+                        span.title= doc.title
+                        span.date= doc.date
+        script= "new Waterfall({containerSelector: '#%s', boxSelector:'.item', minBoxWidth: %s })"%(waterfall_dom_id, min_box_width)
+        div(style="clear:both;height:0")

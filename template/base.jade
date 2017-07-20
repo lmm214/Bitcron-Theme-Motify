@@ -1,0 +1,31 @@
+html
+    head
+    	+h.headers
+        +h.load("/template/style.scss")
+        block title
+            title= site.title
+        
+    body
+        header#header(style="background-image:url({{site.background_image}})")
+            .header-container
+                h1.site-title
+                    a(href="/")= site.title
+                if site.configs.sub_title
+                    h2.site-description= site.configs.sub_title
+                nav.main-navigation
+                    +site.just_nav
+                +site.just_socials
+
+        .wrapper
+            .content
+                block content
+
+            footer.footer
+                span= "©%s " %(site.now.year)
+                span 由
+                    a(href="https://us.bitcron.com", target="_blank") 「Bitcron」
+                    | 驱动 · 主题 
+                    a(href="https://lin.bitcron.com/" , target="_blank")「Motify」
+                    | Moded
+					
+            +h.back_to_top(label="△")

@@ -1,0 +1,18 @@
+extends base
+
+block title
+	title= "文章归档 - " + site.title
+
+block content
+	.posts.archive.post.hentry
+		h1 文章归档
+		entries = d.get_data(types="post", limit=30, sort="desc").group("-date:year")
+		for year, year_posts in entries
+			h3= year
+			ul: for post in year_posts: li
+				time(datetime= post.date.format("%Y-%m-%d")).archive-time= post.date.format("%m月%d日")
+				a(href=post.url,title=post.title)= post.title
+				span.archive-data= "%s评" %(post.comments_count or 0) +" | "+ "%s度" %(post.visits or 0)
+	                	
+    .posts-nav
+    	+h.paginator(style="simple",show_page_of="True", pre_label=' 上一页', next_label='下一页 ')
