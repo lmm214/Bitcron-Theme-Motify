@@ -1,7 +1,7 @@
 extends base
 
 block content
-    .posts
+    .posts.index
         for post in posts
             - var formats = post.metadata.format
             if formats == "photo" 
