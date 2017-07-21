@@ -1,5 +1,7 @@
 # Bitcron-Theme-Motify
 
+![screenshot.jpg](https://raw.githubusercontent.com/lmm214/Bitcron-Theme-Motify/master/motify.jpg)
+
 ### 主题简介
 
 自扒 WordPress 同名主题，支持：
