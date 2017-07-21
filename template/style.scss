@@ -109,11 +109,14 @@ table tbody > tr:nth-child(odd) > td, table tbody > tr:nth-child(odd) > th {back
 .pager {
     text-align:center;margin:2em 0 0;
     a {padding: 1em 0;display: inline-block;}
-    a.pre,span.pre,a.next, span.next {
+    a.pre,span.pre{
         width: 35%;padding-left: 5%;
         &::before {content: "\2039";font-size: 1.3em;padding-right: 5px;font-weight: bold;line-height: 1em;}
     }
-    a.next, span.next {padding-right: 5%;}
+    a.next, span.next {
+        width: 35%;padding-right: 5%;
+        &::after {content: "\203A";font-size: 1.3em;padding-left: 5px;font-weight: bold;line-height: 1em;}
+    }
     span {display: inline-block;color: #bbb;padding: 1em 0;width: 10%;}
     .paginator a {padding: 1em 0.5em;}
 }
