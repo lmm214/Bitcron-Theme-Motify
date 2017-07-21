@@ -3,7 +3,7 @@ Theme Name: Bitcron-Theme-Motify
 Version: 17.7.20
 */
 
-html,body,div,p,ol,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,input,select,button,textarea,iframe,table,th,td,blockquote{margin:0;padding:0;}
+html,body,div,p,ol,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,input,select,button,textarea,iframe,table,th,td,blockquote,figure{margin:0;padding:0;}
 img{border:0 none;}
 ol,ul,li{list-style-type:none;}
 input,textarea,button{outline:none;}
@@ -11,7 +11,7 @@ input[type^="text"],input[type^="password"],textarea {border:1px solid #ddd;}
 input{vertical-align:middle;}
 input[type^="radio"]{border:none; background:none;width:auto;}
 blockquote{background:#F6F6F6;border:1px solid #EAEAEA;font-style:italic;line-height:21px;margin:4px 0 17px;overflow:hidden;padding: 8px 6px;}
-body,input,textarea,select,button,code,blockquote,code,pre{font:14px/1.5 "PingFang SC","WenQuanYi Micro Hei","Microsoft YaHei",sans-serif;}
+body,input,textarea,select,button,code,blockquote,code,pre{font:15px "PingFang SC","WenQuanYi Micro Hei","Microsoft YaHei",sans-serif;}
 code,pre{border:solid #ccc;border-width:1px 0 1px 0;}
 pre{margin:2em 0.1em 2em;background:#fefefe;padding:0.5em 0.5em;}
 pre code{border:0 none;padding:0;}
@@ -22,9 +22,6 @@ h2,h3{font-size:16px;}
 a{text-decoration:none;}
 a:link,a:visited{opacity:1;color:#515865}
 a:hover,a:active {opacity: .6;}
-.aligncenter {display:block; margin-left:auto; margin-right:auto;}
-.alignleft {float:left;}
-.alignright {float:right;}
 .clear{clear:both;}
 
 @font-face{
@@ -79,27 +76,36 @@ table{border-collapse: collapse;border-spacing: 0;background-color: #fff;border:
 th,td{border-left: 1px solid #eee;padding: 0.5em 1em;vertical-align: middle;border-top: 1px solid #eee;}
 th{font-weight: bold;}
 table tbody > tr:nth-child(odd) > td, table tbody > tr:nth-child(odd) > th {background-color: #f9f9f9;}
-.hentry h1 a{color:#DA3E3E;font-weight:400;letter-spacing: 2px;}
-.hentry h1{text-align:center;font-size:26px;margin:15px 0 5px 0}
-.hentry h3{font-size:1.4em;margin:28px 0 8px 0;color:#333;position: relative;}
+
+.hentry h1{color:#DA3E3E;text-align:center;font-size:26px;margin:15px 0 5px 0;font-weight:400;letter-spacing:2px;}
+.hentry h1 a{color:#DA3E3E;}
+.hentry h3{font-size:1.4em;margin:28px 0 18px 0;color:#333;position: relative;}
 .hentry h3:before {content: "##";color: #42b983;position: absolute;left: -1.5em;top:0px;font-size: 1.2em;line-height: 1.2em;}
 .hentry .date{text-align:center;margin-bottom:12px;font-size:13px;display:block;}
 .hentry .meta {text-align:center;}
 .hentry .format-chat .date{text-align:left}
 .hentry .post-content{font-size:16px;position:relative;padding:12px 0 0 0;word-wrap: break-word;}
 .index .hentry .post-content{max-height:20em;overflow: hidden;}
-.hentry .post-content p{margin:0 0 15px;line-height:1.9em;}
-.hentry .post-content blockquote p{margin:0;font-family:stkaiti,KaiTi,KaiTi_GB2312;font-size: 16px;text-indent:2em;}
-.hentry .post-content ul,.hentry .post-content li{margin-bottom:13px;}
-.hentry .post-content ul li,.hentry .post-content ol li{list-style-position:inside;list-style-type:disc;margin-bottom:6px;}
+
+.hentry .post-content p{margin:0 0 15px;line-height:2em;}
+.hentry .post-content blockquote p{margin:0;font-family:STKaiti,KaiTi;font-size:15px;}
+.hentry .post-content ul,.hentry .post-content li{margin-bottom:12px;}
+.hentry .post-content ul li,.hentry .post-content ol li{list-style-position:inside;list-style-type:disc;margin-bottom:8px;}
 .hentry .post-content ul li ol li{list-style-type:decimal;margin-left:30px;margin-top:6px}
 .hentry .post-content ul li ul li{list-style-position:inside;list-style-type:circle;margin-left:30px}
 .hentry .more-link{text-align:center;display:block;margin-top:50px;}
 .hentry .posts-more-link{border-radius:3px;border:2px solid #515865;padding:4px 15px;font-size:14px;}
 .hentry .post-content img{max-width:100%;height:auto;}
 .hentry .post-content img.avatar{padding:2px;margin:10px 30px 10px 0;float:left;border:1px solid #ccc;border-radius:50%;width:48px;height:48px;}
-.hentry .pager:before,#comments:before,footer.footer:before,.post.hentry:after{content:"";display:block;margin:80px auto;width:16%;height:1px;background:#BBB;text-align:center;}
 
+figure {
+  text-align: center;
+  img {max-width: 100%;border-top: 1px solid #eee;border-bottom: 1px solid #eee;}
+  figcaption {font-size: 0.8em;color: #bbb;margin-top: -5px;margin-bottom: 1em;padding:5px;line-height: 1.8em;}
+}
+
+#comments:before,footer.footer:before,.post.hentry:after{content:"";display:block;margin:80px auto;width:16%;height:1px;background:#BBB;text-align:center;}
+ 
 /* page_waterfall_body --------*/
 .humech_waterfall .wf-column{float:left;}
 .humech_waterfall .item .item_body{position:relative;padding:4px;}

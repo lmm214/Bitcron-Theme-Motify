@@ -4,7 +4,7 @@ block title
 	title= post.title + " - " + site.title
 		
 block content
-	.posts
+	.posts.single
 		- var formats = post.metadata.format
 		if formats == "photo"
 			- var metapath = "/_photos/"+ post.metadata.path
