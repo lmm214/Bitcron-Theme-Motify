@@ -87,6 +87,7 @@ table tbody > tr:nth-child(odd) > td, table tbody > tr:nth-child(odd) > th {back
 .hentry .meta {text-align:center;}
 .hentry .format-chat .date{text-align:left}
 .hentry .post-content{font-size:16px;position:relative;padding:12px 0 0 0;word-wrap: break-word;}
+.index .hentry .post-content{max-height:20em;overflow: hidden;}
 .hentry .post-content p{margin:0 0 15px;line-height:1.9em;}
 .hentry .post-content blockquote p{margin:0;font-family:stkaiti,KaiTi,KaiTi_GB2312;font-size: 16px;text-indent:2em;}
 .hentry .post-content ul,.hentry .post-content li{margin-bottom:13px;}
