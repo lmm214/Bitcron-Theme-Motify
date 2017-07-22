@@ -21,11 +21,12 @@ html
                 block content
 
             footer.footer
-                span= "©%s " %(site.now.year)
-                span 由
-                    a(href="https://us.bitcron.com", target="_blank") 「Bitcron」
-                    | 驱动 · 主题 
+                p Powered by
+                    a(href="https://us.bitcron.com", target="_blank")「Bitcron」·
                     a(href="https://lin.bitcron.com/bitcron-theme-motify" , target="_blank")「Motify」
-                    | Moded
+                p
+                    span= "©%s " %(site.now.year)
+
+
 					
             +h.back_to_top(label="△")

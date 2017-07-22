@@ -15,10 +15,10 @@ block content
                         +h.show('waterfall', path=metapath,width=150,thumbnail_fixed='True',thumbnail_width=150,thumbnail_height=150)
                     footer.post-footer
                         a(href=post.url).more-link
-                            span.posts-more-link= '阅读全文 »'
+                            span.posts-more-link= '发表评论 »'
             else if formats == "chat"
-                article.post.hentry
-                    header.format-chat: time.date
+                article.post.hentry.format-chat
+                    header: time.date
                         i.fa
                         span= post.date.format('%d日 %m月，%Y')
                     .post-content
@@ -31,10 +31,16 @@ block content
                         i.fa
                         span= post.date.format('%d日 %m月，%Y')
                     h1.entry-title: a(href=post.url)= post.title
-                    .post-content= post.content.limit(mark='......', keep_images=Fasle, words='200')
-                    footer.post-footer
-                        a(href=post.url).more-link
-                            span.posts-more-link= '阅读全文 »'
+                    if post.content.opening == ''
+                        .post-content= post.content
+                        footer.post-footer
+                            a(href=post.url+'#comments').more-link
+                                span.posts-more-link= '发表评论 »'
+                    else
+                        .post-content= post.content.opening
+                        footer.post-footer
+                            a(href=post.url).more-link
+                                span.posts-more-link= '阅读全文 »'
 
         .posts-nav
             +h.paginator(style="simple",show_page_of="True", pre_label=' 上一页', next_label='下一页 ')

@@ -2,7 +2,14 @@ extends base
 
 block title
 	title= post.title + " - " + site.title
-		
+
+mixin sub_post_handler(url, original_html,new_line=True)
+    if(url == 'https://lin.bitcron.com/bitcron-theme-motify')
+		mypost = posts.get_one(path="about.md")
+		h2= mypost.title
+    else
+    	{{original_html}}
+
 block content
 	.posts.single
 		- var formats = post.metadata.format
@@ -13,7 +20,7 @@ block content
 				header.format-photo
 					time.date
 						i.fa
-						span= post.date.format('%d %m月，%Y')
+						span= post.date.format('%d日 %m月，%Y')
 					h1.entry-title= post.title
 				.post-content= post.content
 					+h.show('waterfall',path=metapath,width=metawidth)
@@ -21,7 +28,7 @@ block content
 			article.post.hentry
 				header.format-chat: time.date
 					i.fa
-					span= post.date.format('%d %m月，%Y')
+					span= post.date.format('%d日 %m月，%Y')
 				.post-content
 					img(src= site.site_avatar).avatar
                 	post.content
@@ -31,9 +38,9 @@ block content
 				header(class=meta)
 					time.date
 						i.fa
-						span= post.date.format('%d %m月，%Y')
+						span= post.date.format('%d日 %m月，%Y')
 					h1.entry-title= post.title
-				.post-content= post.content		
+				.post-content= post.content
 
 	.pager
 				if posts.pre_one
