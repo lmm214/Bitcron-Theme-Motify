@@ -1,6 +1,6 @@
 # Bitcron-Theme-Motify
 
-![screenshot.jpg](https://raw.githubusercontent.com/lmm214/Bitcron-Theme-Motify/master/motify.jpg)
+![screenshot.jpg](https://raw.githubusercontent.com/lmm214/Bitcron-Theme-Motify/master/bitcron-motify.jpg)
 
 ### 主题简介
 
