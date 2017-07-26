@@ -1,0 +1,14 @@
+{
+    "fields": [
+        "footer_slogan(placeholder='重拾写作的乐趣')",
+        "footer_slogan_font(type=font, default=hanazono)",
+        "site_title_font(type=font, default=hanazono)"
+    ],
+    "i18n":{
+        "zh_cn": {
+          "Footer Slogan": "页尾签名",
+          "Footer Slogan Font": "页尾签名字体",
+          "Site Title Font": "网站标题字体"
+      }
+    }
+}

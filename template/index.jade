@@ -4,20 +4,21 @@ block content
     .posts.index
         for post in posts
             - var formats = post.metadata.format
+            - var cates = post.category.title
+            - var meta = "post hentry "+ cates + " format-"+ formats
             if formats == "photo" 
                 - var metapath = "/_photos/"+ post.metadata.path
-                article.post.hentry
-                    header.format-photo: time.date
+                article(class=meta)
+                    header: time.date
                         i.fa
                         span= post.date.format('%d日 %m月，%Y')
                     h1.entry-title: a(href=post.url)= post.title
                     .post-content
                         +h.show('waterfall', path=metapath,width=150,thumbnail_fixed='True',thumbnail_width=150,thumbnail_height=150)
                     footer.post-footer
-                        a(href=post.url).more-link
-                            span.posts-more-link= '发表评论 »'
-            else if formats == "chat"
-                article.post.hentry.format-chat
+                        a(href=post.url).more-link: span.posts-more-link= '发表评论 »'
+            else if formats == "chat" or cates == "chat"
+                article(class=meta)
                     header: time.date
                         i.fa
                         span= post.date.format('%d日 %m月，%Y')
@@ -25,22 +26,19 @@ block content
                         a(href=post.url): img(src= site.site_avatar).avatar
                         post.content
             else
-                - var meta = "format-" + formats
-                article.post.hentry
-                    header(class=meta): time.date
+                article(class=meta)
+                    header: time.date
                         i.fa
                         span= post.date.format('%d日 %m月，%Y')
                     h1.entry-title: a(href=post.url)= post.title
-                    if post.content.opening == ''
-                        .post-content= post.content
-                        footer.post-footer
-                            a(href=post.url+'#comments').more-link
-                                span.posts-more-link= '发表评论 »'
-                    else
+                    if post.content.opening
                         .post-content= post.content.opening
                         footer.post-footer
-                            a(href=post.url).more-link
-                                span.posts-more-link= '阅读全文 »'
+                            a(href=post.url).more-link: span.posts-more-link= '阅读全文 »'
+                    else
+                        .post-content= post.content
+                        footer.post-footer
+                            a(href=post.url+'#comments').more-link: span.posts-more-link= '发表评论 »'
 
         .posts-nav
             +h.paginator(style="simple",show_page_of="True", pre_label=' 上一页', next_label='下一页 ')

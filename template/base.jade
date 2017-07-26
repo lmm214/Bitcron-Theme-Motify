@@ -3,15 +3,15 @@ html
     	+h.headers
         +h.load("/template/style.scss")
         block title
-            title= site.title
+            	title= site.title
         
     body
         header#header(style="background-image:url({{site.background_image}})")
             .header-container
-                h1.site-title
-                    a(href="/")= site.title
-                if site.configs.sub_title
-                    h2.site-description= site.configs.sub_title
+				h1.site-title
+					a(href="/")= site.title
+                if site.sub_title
+                    h2.site-description= site.sub_title
                 nav.main-navigation
                     +site.just_nav
                 +site.just_socials
@@ -21,12 +21,21 @@ html
                 block content
 
             footer.footer
-                p Powered by
-                    a(href="https://us.bitcron.com", target="_blank")「Bitcron」·
-                    a(href="https://lin.bitcron.com/bitcron-theme-motify" , target="_blank")「Motify」
-                p
-                    span= "©%s " %(site.now.year)
-
-
+                p: span= "©%s  Theme" %(site.now.year)
+					a(href="https://immmmm.com/bitcron-theme-motify" , target="_blank")「Motify」
+				p: span= "Powered by "
+                    a(href="https://us.bitcron.com", target="_blank")  Bitcron
 					
-            +h.back_to_top(label="△")
+		+h.back_to_top(label="△")
+		
+    script
+        $(document).ready (function() {
+			var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+			var location_href = window.location.href.replace(parse_url,'$3')
+            $('.post-content a:not(:has(img)),.author-name a').click (function() {
+				var click_href = $(this).attr('href').replace(parse_url,'$3')
+				if ( location_href != click_href )
+					$(this).attr('target','_blank');
+			});
+			$('.post-content a:not(:has(img)).md_compiled').prepend("<i class='fa link'></i>");
+		});

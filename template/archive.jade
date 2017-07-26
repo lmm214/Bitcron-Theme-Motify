@@ -4,6 +4,8 @@ block title
 	title= "文章归档 - " + site.title
 
 block content
+	#noticecon
+
 	.posts.archive.post.hentry
 		h1 文章归档
 		entries = d.get_data(types="post", limit=30, sort="desc").group("-date:year")

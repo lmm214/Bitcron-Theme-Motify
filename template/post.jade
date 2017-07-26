@@ -3,39 +3,33 @@ extends base
 block title
 	title= post.title + " - " + site.title
 
-mixin sub_post_handler(url, original_html,new_line=True)
-    if(url == 'https://lin.bitcron.com/bitcron-theme-motify')
-		mypost = posts.get_one(path="about.md")
-		h2= mypost.title
-    else
-    	{{original_html}}
-
 block content
 	.posts.single
 		- var formats = post.metadata.format
+		- var cates = post.category.title
+		- var meta = "post hentry "+ cates + " format-"+ formats
 		if formats == "photo"
 			- var metapath = "/_photos/"+ post.metadata.path
 			- var metawidth = post.metadata.width or 180
-			article.post.hentry
-				header.format-photo
+			article(class=meta)
+				header
 					time.date
 						i.fa
 						span= post.date.format('%d日 %m月，%Y')
 					h1.entry-title= post.title
 				.post-content= post.content
 					+h.show('waterfall',path=metapath,width=metawidth)
-		else if formats == "chat"
-			article.post.hentry
-				header.format-chat: time.date
+		else if formats == "chat" or cates == "chat"
+			article(class=meta)
+				header: time.date
 					i.fa
 					span= post.date.format('%d日 %m月，%Y')
 				.post-content
 					img(src= site.site_avatar).avatar
                 	post.content
 		else
-			- var meta = "format-" + formats
-			article.post.hentry
-				header(class=meta)
+			article(class=meta)
+				header
 					time.date
 						i.fa
 						span= post.date.format('%d日 %m月，%Y')
@@ -55,3 +49,4 @@ block content
 
 	section#comments
 			+post.comments_as_html()
+			
