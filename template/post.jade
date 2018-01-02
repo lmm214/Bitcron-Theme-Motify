@@ -1,52 +1,162 @@
 extends base
 
-block title
-	title= post.title + " - " + site.title
+block head
+    +h.headers
+    +h.load("/template/style.scss")
+    title= post.title + " - " + site.title
 
+block header
+    header
+        - var headcover = site.background_image
+        if post.metadata.cover
+            - var headcover = post.metadata.cover
+            
+        #header(style="background-image:url({{headcover}})")
+            .header-container
+                h1.site-title
+                    a(href="/")= site.title
+                if site.sub_title
+                    h2.site-description= site.sub_title
+                nav.main-navigation
+                    +site.just_nav
+                +site.just_socials
+                    
 block content
-	.posts.single
-		- var formats = post.metadata.format
-		- var cates = post.category.title
-		- var meta = "post hentry "+ cates + " format-"+ formats
-		if formats == "photo"
-			- var metapath = "/_photos/"+ post.metadata.path
-			- var metawidth = post.metadata.width or 180
-			article(class=meta)
-				header
-					time.date
-						i.fa
-						span= post.date.format('%d日 %m月，%Y')
-					h1.entry-title= post.title
-				.post-content= post.content
-					+h.show('waterfall',path=metapath,width=metawidth)
-		else if formats == "chat" or cates == "chat"
-			article(class=meta)
-				header: time.date
-					i.fa
-					span= post.date.format('%d日 %m月，%Y')
-				.post-content
-					img(src= site.site_avatar).avatar
-                	post.content
-		else
-			article(class=meta)
-				header
-					time.date
-						i.fa
-						span= post.date.format('%d日 %m月，%Y')
-					h1.entry-title= post.title
-				.post-content= post.content
-
-	.pager
-				if posts.pre_one
-					a.pre(href=posts.previous_one.url)= posts.previous_one.title
-				else
-					span.pre= '已是最新一篇'
-					
-				if posts.next_one
-					a.next(href=posts.next_one.url)= posts.next_one.title
-				else
-					span.next= '已是最早一篇'
-
-	section#comments
-			+post.comments_as_html()
+    .posts.single
+        if post.metadata.format
+            - var formats = post.metadata.format
+        else if post.metadata.path
+            - var formats = "photo"
+        else if post.category.filename == "chat"
+            - var formats = "chat"
+        else
+            - var formats = "daily"
 			
+		- var cates = post.category.filename
+        - var meta = "post hentry "+ cates + " format-"+ formats
+
+		- var now_ym = site.now.format('%y%m').int
+		- var now_d = site.now.format('%d').int
+		- var now_H = site.now.format('%H').int
+		- var now_M = site.now.format('%M').int
+		- var post_ym = post.date.format('%y%m').int
+		- var post_d = post.date.format('%d').int
+		- var post_H = post.date.format('%H').int
+		- var post_M = post.date.format('%M').int
+		
+		if now_ym == post_ym
+			if now_d == post_d
+				if now_H == post_H
+					if now_M == post_M
+						- var re_date = "刚刚发布"
+					else
+						- var re_date = "发布于 " + now_M -  post_M + " 分钟前"
+				else
+					- var re_date = "发布于 " + now_H -  post_H + " 小时前"
+			else
+				- var re_date = "发布于 " + now_d -  post_d + " 天前"
+		else
+			- var re_date = post.date.format('%m月 %d日，%Y')
+			
+        if formats == "photo"
+            - var metapath = "/_photos/"+ post.metadata.path
+            - var metawidth = post.metadata.width or 350
+            article(class=meta)
+                header
+                    time.date: i.fa: span= re_date
+                    h1.entry-title: post.title
+					if account.is_admin
+                        p.admin: a(href="https://us.bitcron.com/service/files_manager?site_id="+site.id+"#"+post.path) [编辑日志]
+                .post-content= post.content
+                    +h.show('postwf',path=metapath,width=metawidth)
+        else if formats == "chat"
+            article(class=meta)
+                header: time.date: i.fa: span= re_date
+				if account.is_admin
+                        p.admin: a(href="https://us.bitcron.com/service/files_manager?site_id="+site.id+"#"+post.path) [编辑日志]
+                .post-content
+                	img(src= site.site_avatar).avatar
+					post.content
+        else
+            mixin sub_post_handler(url, original_html, new_line=True)
+                if not new_line
+                    {{original_html}}
+                else
+                    sub_post = d.get_doc(url=url)
+                    if not sub_post
+                        {{original_html}}
+                    else: .post-preview.clearfix
+                        preview_meta_class = "with_bg post-preview--meta" if sub_post.cover else 'without_bg post-preview--meta'
+                        div(class=preview_meta_class)
+                            .post-preview--middle
+                                h4.post-preview--title
+                                    a(href=sub_post.url)= sub_post.title
+                                section.post-preview--excerpt
+                                    span= sub_post.content.limit(words=40, keep_images=False).plain
+                                time.post-preview--date= sub_post.date('%Y.%m.%d') + " | " + "%s评" %(sub_post.comments_count or 0) + " | " + "%s度" %(sub_post.visits or 0)
+                        if sub_post.cover
+                            bg_url = sub_post.cover.resize(350, 350, fixed=True)
+                            .post-preview--image(style="background-image:url({{bg_url}})")
+
+            article(class=meta): +refer(sub_post_handler)
+                header
+                    time.date: i.fa: span= re_date
+                    h1.entry-title= post.title
+					if account.is_admin
+                        p.content_admin.admin: a(href="https://us.bitcron.com/service/files_manager?site_id="+site.id+"#"+post.path) [编辑日志]
+                    if post.category.filename == "coding"
+                        - var last_date = post.sys_date.format('%Y%j')
+                        - var post_date = post.date.format('%Y%j')
+                        if last_date != post_date
+                            p.last-update= "最后更新于：" + post.sys_date.format('%Y/%m/%d %H:%M')
+                .post-content= post.content
+
+    if post.metadata.status not in ['page', 'Page']
+        .pager
+            if posts.pre_one
+                a.pre(href=posts.previous_one.url)= posts.previous_one.title
+            else
+                span.pre= '已是最新一篇'    
+            if posts.next_one
+                a.next(href=posts.next_one.url)= posts.next_one.title
+            else
+                span.next= '已是最早一篇'
+
+
+    if post.metadata.comment not in ['no', 'No', False]
+        section#comments
+			- var coms = post.comments_count or 0
+		    p.comments_count: span= "共 "+coms+" 条评论"
+
+			if account.is_admin
+				p.comments_admin.admin: a(href="https://us.bitcron.com/service/files_manager?site_id="+site.id+"#_comments/"+post.path.split('.')[-2]+".csv") [编辑评论]
+				
+            +post.comments_as_html()
+			div#OwO
+				+h.load("/template/OwO/OwO.min.css","/template/OwO/OwO.min.js","/template/include/jquery.md5.js")
+				div.OwO
+				
+		script
+			var OwO_demo = new OwO({
+					logo: ' OωO表情 ',
+					container: document.getElementsByClassName('OwO')[0],
+					target: document.getElementsByClassName('textarea_box')[0],
+					api: 'https://immmmm.com/template/OwO/OwO.json',
+                    width:"80%"
+			});
+			$(document).ready(function(){
+				$("#new_comment_form").prepend($('.OwO'))
+				var author_val = Cookies.get('comment_author')
+				var mail_val = Cookies.get('comment_email')
+				var mail_src = "https://cdn.v2ex.com/gravatar/"+$.md5(mail_val)
+				if (author_val){
+					$('ul.ident li').hide();
+					$("#new_comment_form").prepend('<p class="hi-info">你好， ' + author_val + "  " +'<a href="javascript:;" class="edit-info">[资料修改]</a></p>');
+					$('.comment_trigger .avatar img').attr('src',mail_src);
+					$('.comment_trigger .trigger_title').text("ヾﾉ≧∀≦)o 来，啊~快活啊!~")
+				}
+				 $(".edit-info").click(function(){
+				 	$('.textarea_box').click().focus();
+				 	$('ul.ident li').show();
+				});
+			});

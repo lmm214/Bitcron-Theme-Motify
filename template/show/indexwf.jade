@@ -1,0 +1,13 @@
+album_folder = d.get_doc(path, match=True, type='folder')
+if album_folder
+    dom_id = h.get_dom_id()
+    image_sort = 'date'
+    image_docs = d.get_data(path=path, type='image', limit=20, with_page=False, sort=sort)
+    waterfall_dom_id = 'waterfall_%s'%dom_id
+    .h_show_waterfall_container
+        .humech_waterfall(id=waterfall_dom_id)
+            for doc in image_docs
+                cover = doc.url.resize(width=150, height=150, fixed='True')
+                if cover!='/404': .item: .item_body
+                    +h.auto_a(title=cover, href=doc.url, alt=doc.title)
+        div(style="clear:both;height:0")

@@ -3,42 +3,65 @@ extends base
 block content
     .posts.index
         for post in posts
-            - var formats = post.metadata.format
-            - var cates = post.category.title
+        	if post.metadata.format
+        		- var formats = post.metadata.format
+        	else if post.metadata.path
+        		- var formats = "photo"
+        	else if post.category.filename == "chat"
+        		- var formats = "chat"
+        	else
+        		- var formats = "daily"
+            
+            - var cates = post.category.filename
             - var meta = "post hentry "+ cates + " format-"+ formats
-            if formats == "photo" 
+
+			- var now_ym = site.now.format('%y%m').int
+			- var now_d = site.now.format('%d').int
+			- var now_H = site.now.format('%H').int
+			- var now_M = site.now.format('%M').int
+			- var post_ym = post.date.format('%y%m').int
+			- var post_d = post.date.format('%d').int
+			- var post_H = post.date.format('%H').int
+			- var post_M = post.date.format('%M').int
+			
+			if now_ym == post_ym
+				if now_d == post_d
+					if now_H == post_H
+						if now_M == post_M
+							- var re_date = "刚刚发布"
+						else
+							- var re_date = "发布于 " + now_M -  post_M + " 分钟前"
+					else
+						- var re_date = "发布于 " + now_H -  post_H + " 小时前"
+				else
+					- var re_date = "发布于 " + now_d -  post_d + " 天前"
+			else
+				- var re_date = post.date.format('%m月 %d日，%Y')
+			
+            if formats == "photo"
                 - var metapath = "/_photos/"+ post.metadata.path
                 article(class=meta)
-                    header: time.date
-                        i.fa
-                        span= post.date.format('%d日 %m月，%Y')
+                    header: time.date: i.fa: span= re_date
                     h1.entry-title: a(href=post.url)= post.title
                     .post-content
-                        +h.show('waterfall', path=metapath,width=150,thumbnail_fixed='True',thumbnail_width=150,thumbnail_height=150)
-                    footer.post-footer
-                        a(href=post.url).more-link: span.posts-more-link= '发表评论 »'
-            else if formats == "chat" or cates == "chat"
+                        +h.show('indexwf',path=metapath)
+                    footer.post-footer: a(href=post.url).more-link= '发表评论 »'
+            else if formats == "chat"
                 article(class=meta)
-                    header: time.date
-                        i.fa
-                        span= post.date.format('%d日 %m月，%Y')
+                    header: time.date: i.fa: span= re_date
                     .post-content
                         a(href=post.url): img(src= site.site_avatar).avatar
                         post.content
             else
                 article(class=meta)
-                    header: time.date
-                        i.fa
-                        span= post.date.format('%d日 %m月，%Y')
+                    header: time.date: i.fa: span= re_date
                     h1.entry-title: a(href=post.url)= post.title
                     if post.content.opening
                         .post-content= post.content.opening
-                        footer.post-footer
-                            a(href=post.url).more-link: span.posts-more-link= '阅读全文 »'
+                        footer.post-footer: a(href=post.url).more-link= '阅读全文 »'
                     else
                         .post-content= post.content
-                        footer.post-footer
-                            a(href=post.url+'#comments').more-link: span.posts-more-link= '发表评论 »'
+                        footer.post-footer: a(href=post.url+'#comments').more-link= '发表评论 »'
 
         .posts-nav
             +h.paginator(style="simple",show_page_of="True", pre_label=' 上一页', next_label='下一页 ')

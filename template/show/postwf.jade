@@ -3,11 +3,11 @@
 album_folder = d.get_doc(path, match=True, type='folder')
 if album_folder
     dom_id = h.get_dom_id()
-    image_sort = 'position'
+    image_sort = 'date'
     min_box_width = width.force_int or 250
     thumbnail_width = thumbnail_width or 600
     thumbnail_height = thumbnail_height or None
-    image_docs = d.get_data(path=path, type='image', limit=50, with_page=False, sort=sort)
+    image_docs = d.get_data(path=path, type='image', limit=100, with_page=False, sort=sort)
     waterfall_dom_id = 'waterfall_%s'%dom_id
     .h_show_waterfall_container
         .humech_waterfall(id=waterfall_dom_id)

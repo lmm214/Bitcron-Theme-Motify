@@ -1,41 +1,91 @@
 html
     head
-    	+h.headers
-        +h.load("/template/style.scss")
-        block title
-            	title= site.title
+        block head
+            +h.headers
+            +h.load("/template/style.scss")
+            title= site.title
         
     body
-        header#header(style="background-image:url({{site.background_image}})")
-            .header-container
-				h1.site-title
-					a(href="/")= site.title
-                if site.sub_title
-                    h2.site-description= site.sub_title
-                nav.main-navigation
-                    +site.just_nav
-                +site.just_socials
-
+        block header
+            header#header(style="background-image:url({{site.background_image}})")
+                .header-container
+                    h1.site-title
+                        a(href="/")= site.title
+                    if site.sub_title
+                        h2.site-description= site.sub_title
+                    nav.main-navigation
+                        +site.just_nav
+                    +site.just_socials
+                
         .wrapper
             .content
                 block content
 
             footer.footer
-                p: span= "©%s  Theme" %(site.now.year)
+                p
+					span= "©%s  共" %(site.now.year)
+					span= ' %s 篇日志，计 ' %(d.get_data(types='post', return_count=true, with_page=false))
+					span= ' {0:,} '.format(site.text_words) + '字'
+                p
+					span= "Theme "
 					a(href="https://immmmm.com/bitcron-theme-motify" , target="_blank")「Motify」
-				p: span= "Powered by "
-                    a(href="https://us.bitcron.com", target="_blank")  Bitcron
-					
-		+h.back_to_top(label="△")
-		
+					span= "Powered by "
+                    a(href="https://pi.bitcron.com", target="_blank")  「Bitcron」
+                    
+        +h.back_to_top(label="△")
+        
     script
         $(document).ready (function() {
-			var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
-			var location_href = window.location.href.replace(parse_url,'$3')
-            $('.post-content a:not(:has(img)),.author-name a').click (function() {
-				var click_href = $(this).attr('href').replace(parse_url,'$3')
-				if ( location_href != click_href )
-					$(this).attr('target','_blank');
-			});
-			$('.post-content a:not(:has(img)).md_compiled').prepend("<i class='fa link'></i>");
-		});
+            var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+            var location_href = window.location.href.replace(parse_url,'$3');
+            $('.post-content a:not(:has(img)),.author-name a').hover(function() {
+                var this_href = $(this).attr('href');
+				var replace_href = this_href.replace(parse_url,'$3');
+                if ( this_href != replace_href && location_href != replace_href){$(this).attr('target','_blank');}
+            });
+			$('form[id=new_comment_form]').keypress(function(e){if(e.ctrlKey && e.which == 13 || e.which == 10) {$('.comment_submit_button').click();}});
+            function urlIconlize(url) {
+                var domain,
+                    _output;
+                var iconFontTag = 'iconfont';
+                var iconMap = {
+                    'twitter': iconFontTag + '-twitter',
+					'wechat': iconFontTag + '-wechat',
+                    'qzone': iconFontTag + '-qzone',
+                    'weibo': iconFontTag + '-weibo',
+                    'facebook': iconFontTag + '-facebook',
+                    'github': iconFontTag + '-github',
+                    'douban': iconFontTag + '-douban',
+                    'google': iconFontTag + '-google',
+                    'luolei': iconFontTag + '-luolei',
+                    'dribble': iconFontTag + '-dribble',
+                    'v2ex': iconFontTag + '-v2ex',
+                    'zhihu': iconFontTag + '-zhihu',
+                    'wikipedia': iconFontTag + '-wikipedia',
+                    'jianshu': iconFontTag + '-jianshu',
+                    'youku': iconFontTag + '-youku',
+                    'youtube': iconFontTag + '-youtube'
+                }
+                for (var name in iconMap) {
+                    if (typeof iconMap[name] !== 'function') {
+                        var MapKey = name;
+                        if (url.indexOf(MapKey) >= 0) {
+                            domain = MapKey;
+                            _output = iconMap[MapKey];
+                        }
+                    }
+                }
+                return _output;
+            };
+			function addIcons() {
+           		$('.post-content  a:not(:has(img))').each(function(i) {
+                	var _src = $(this).attr('href');
+                	var tmp = document.createElement('a');
+                	tmp.href = _src;
+                	_selfDomain = tmp.hostname;
+                	urlIconlize(_selfDomain);
+                	$(this).prepend('<i class="iconfont ' + urlIconlize(_selfDomain) + '"></i>');
+            	});
+			}
+			addIcons();
+        });

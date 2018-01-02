@@ -1,0 +1,27 @@
+extends base
+
+block title
+	title= posts.category.title + " - " + site.title
+
+block content
+	.posts.archive.post.hentry
+		h1= posts.category.title
+		p.all_category
+			for category in posts.categories
+				a.friends(href=category.url)
+					img(src=category.cover)
+					category.title
+		span.postss= '此分类共计 %s 篇日志' %(d.get_data(types='post', path=posts.category.filename,return_count=true, with_page=false))
+
+		+posts.set_min_per_page(30)
+		ul.archive-list: for post in posts: li.archive-item
+			if post.cover
+				post_src = post.cover.resize(48, 48, fixed=True)
+			else
+				post_src = post.category.cover
+			img.archive-list-image(src=post_src+'?imageView2/1/w/96/h/96/q/75|imageslim')
+			a(href=post.url,title=post.title)= post.title
+			span.archive-item-meta= post.date.format('%Y-%m-%d') + " / %s 阅读 / " %(post.visits or 0) + "%s 评论" %(post.comments_count or 0)
+	                	
+    .posts-nav
+    	+h.paginator(style="simple",show_page_of="True", pre_label=' 上一页', next_label='下一页 ')
